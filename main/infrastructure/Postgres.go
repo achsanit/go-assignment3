@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 type SqlPostgres interface {
@@ -20,7 +21,7 @@ func NewSqlPostgres() SqlPostgres {
 }
 
 func (sql *sqlPostgresImpl) GetConnection() *sql.DB {
-	return sql.master 
+	return sql.master
 }
 
 func connectDb() *sql.DB {
@@ -35,6 +36,7 @@ func connectDb() *sql.DB {
 	conn, err := sql.Open("postgres", connection)
 
 	if err != nil {
+		log.Println(err.Error())
 		return nil
 	}
 

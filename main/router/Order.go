@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/achsanit/go-assignment2/main/handler"
+	"github.com/achsanit/go-assignment2/main/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +20,8 @@ func NewOrderRouter(v *gin.RouterGroup, h handler.OrderHandler) OrderRouter {
 }
 
 func (order *orderRouterImpl) Mount() {
+	order.version.Use(middleware.CheckAuthBearer)
+
 	order.version.GET("", order.handler.GetOrders)
 	order.version.POST("", order.handler.CreateOrder)
 	order.version.DELETE("/:order_id", order.handler.DeleteOrder)

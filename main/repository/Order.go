@@ -96,7 +96,7 @@ func (q *orderQueryImpl) GetOrders(c context.Context) ([]model.Order, error) {
 	orders := []model.Order{}
 	rows, err := db.Query("SELECT * FROM orders")
 	if err != nil {
-		return orders, nil
+		return orders, err
 	}
 	defer rows.Close()
 

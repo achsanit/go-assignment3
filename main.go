@@ -12,12 +12,20 @@ import (
 func main() {
 	r := gin.Default()
 
-	postgres := infrastructure.NewSqlPostgres()
-
 	v1 := r.Group("/v1")
 	{
+		public := v1.Group("/public")
+		{
+			service := service.NewPublicService()
+			handler := handler.NewPublicHandler(service)
+			router := router.NewPublicRouter(public, handler)
+
+			router.Mount()
+		}
+
 		orders := v1.Group("/orders")
 		{
+			postgres := infrastructure.NewSqlPostgres()
 			orderRepo := repository.NewOrdeQuery(postgres)
 			orderService := service.NewOrderService(orderRepo)
 			orderHandler := handler.NewOrderHandler(orderService)
