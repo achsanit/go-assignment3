@@ -92,6 +92,9 @@ func (q *orderQueryImpl) CreateOrder(c context.Context, order model.OrderItems) 
 
 func (q *orderQueryImpl) GetOrders(c context.Context) ([]model.Order, error) {
 	db := q.db.GetConnection()
+	if db == nil {
+		return []model.Order{}, errors.New("db nil")
+	}
 
 	orders := []model.Order{}
 	rows, err := db.Query("SELECT * FROM orders")
